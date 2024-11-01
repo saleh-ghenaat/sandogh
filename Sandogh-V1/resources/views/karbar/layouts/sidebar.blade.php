@@ -15,6 +15,10 @@
                 <i class="fas fa-key"></i>
                 <span>تغییر رمز عبور</span>
             </a>
+             <a href="{{ route('karbar.content.chat.index' , Auth::user()->id) }}" class="sidebar-link">
+                <i class="fas fa-comment"></i>
+                <span> گفتگوی آنلاین </span>
+            </a>
 
 
 

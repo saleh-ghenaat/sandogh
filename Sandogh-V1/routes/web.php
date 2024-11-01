@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\Content\PardakhtihaController;
 use App\Http\Controllers\Admin\Content\AghsatController;
 use App\Http\Controllers\Admin\Content\UserAccountController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Karbar\Content\ChatController;
 use GuzzleHttp\Middleware;
 
 /*
@@ -257,6 +258,8 @@ Route::prefix('karbar')->namespace('Karbar')->group(function(){
     Route::prefix('content')->namespace('Content')->group(function () {
         Route::get('/change-password/{user}', [UserAccountController::class, 'index'])->name('karbar.content.change-password.index');
         Route::put('/change-password/update/{user}', [UserAccountController::class, 'update'])->name('karbar.content.change-password.update');
+        Route::get('/chat/{user}', [ChatController::class, 'index'])->name('karbar.content.chat.index');
+        Route::post('/chat/send/{user}', [ChatController::class, 'send'])->name('karbar.content.chat.send');
 
         //pardakhtghest
         Route::prefix('pardakhtghest')->group(function () {

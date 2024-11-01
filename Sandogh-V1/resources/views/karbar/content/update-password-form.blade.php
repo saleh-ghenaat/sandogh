@@ -1,7 +1,7 @@
 @extends('karbar.layouts.master')
 
 @section('head-tag')
-<title> واریز قسط</title>
+<title> تغییر رمز عبور </title>
 <link rel="stylesheet" href="{{asset('admin-assets/jalalidatepicker/persian-datepicker.min.css')}}">
 @endsection
 
