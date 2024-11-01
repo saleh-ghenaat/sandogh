@@ -18,4 +18,6 @@ class KarbarDashboardController extends Controller
         $pardakhtihas = Pardakhtiha::where('user_id',$user)->get();
         return view('karbar.index', compact('AccountInformations','vams','pardakhtihas'));
     }
+
+
 }

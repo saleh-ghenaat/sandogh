@@ -206,7 +206,10 @@ return [
         'copan' => 'کد تخفیف',
         'code_peygiri' => 'کد پیگیری',
         'mablagh_ghest' => ' مبلغ قسط',
-        
+        'old_password' => 'رمز عبور فعلی',
+        'new_password' => 'رمز عبور',
+        'new_confirm_password' => 'رمز عبور مجدد',
+
 
     ],
 ];

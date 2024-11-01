@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\Content\AccountinformationController;
 use App\Http\Controllers\Admin\Content\VamController;
 use App\Http\Controllers\Admin\Content\PardakhtihaController;
 use App\Http\Controllers\Admin\Content\AghsatController;
+use App\Http\Controllers\Admin\Content\UserAccountController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use GuzzleHttp\Middleware;
 
@@ -252,8 +253,10 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
 
 Route::prefix('karbar')->namespace('Karbar')->group(function(){
     Route::get('/', [KarbarDashboardController::class, 'index'])->name('karbar.home');
-   
+
     Route::prefix('content')->namespace('Content')->group(function () {
+        Route::get('/change-password/{user}', [UserAccountController::class, 'index'])->name('karbar.content.change-password.index');
+        Route::put('/change-password/update/{user}', [UserAccountController::class, 'update'])->name('karbar.content.change-password.update');
 
         //pardakhtghest
         Route::prefix('pardakhtghest')->group(function () {
