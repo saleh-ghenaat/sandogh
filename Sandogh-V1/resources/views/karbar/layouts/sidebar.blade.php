@@ -11,6 +11,10 @@
                 <i class="fas fa-home"></i>
                 <span>ثبت قسط</span>
             </a>
+             <a href="{{ route('karbar.content.change-password.index' , Auth::user()->id) }}" class="sidebar-link">
+                <i class="fas fa-key"></i>
+                <span>تغییر رمز عبور</span>
+            </a>
 
 
 
