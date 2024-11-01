@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Content\PostCategory;
 use App\Models\Content\User;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -49,8 +49,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->all();
-        $users = User::create($inputs);
-        return redirect()->route('admin.content.user.index')->with('swal-success', ' کاربر جدید شما با موفقیت ثبت شد');
+        
+        // رمزنگاری پسورد قبل از ذخیره
+        if (isset($inputs['password'])) {
+            $inputs['password'] = Hash::make($inputs['password']);
+        }
+        
+        $user = User::create($inputs);
+        return redirect()->route('admin.content.user.index')->with('swal-success', 'کاربر جدید شما با موفقیت ثبت شد');
     }
 
     /**
