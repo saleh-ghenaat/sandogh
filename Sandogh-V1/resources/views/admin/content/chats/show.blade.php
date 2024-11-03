@@ -1,4 +1,4 @@
-@extends('karbar.layouts.master')
+@extends('admin.layouts.master')
 
 @section('head-tag')
 <title>گفتگوی آنلاین</title>
@@ -37,7 +37,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item font-size-12"> <a href="#">خانه</a></li>
+        <li class="breadcrumb-item font-size-12"> <a href="{{route('admin.home')}}">خانه</a></li>
         <li class="breadcrumb-item font-size-12"> <a href="#">گفتگوی آنلاین</a></li>
     </ol>
 </nav>
@@ -53,16 +53,22 @@
             </section>
 
             <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                <a href="{{ route('karbar.home') }}" class="btn btn-info btn-sm">بازگشت</a>
+                <a href="{{ route('admin.content.chats.index') }}" class="btn btn-info btn-sm">بازگشت</a>
             </section>
 
             <section>
-                <section id="messages" style="background-color: lightgray;overflow:scroll;height:300px;" class="py-1 px-2 rounded">
-                    @foreach($user->chats()->get() as $chat)
-                        <p class="p-2 rounded" style="background-color: azure;width:fit-content"><strong>{{ $user->first_name . ' '. $user->last_name }} :</strong> {{ $chat->body }}</p>
+                <section id="messages" style="background-color: lightgray;overflow:scroll;height:300px;" class="py-1 px-2 rounded ">
+                    @foreach($messages as $message)
+                    <section style="direction:{{$message->author_id == $admin->id ? 'rtl' : 'ltr'}}">
+                        <div class="p-2 rounded my-1 align-items-left" style="background-color: azure;width:fit-content;">
+                            <p class="pr-2">{{ $message->body }}</p>
+                            <small>{{ $message->created_at->format('H:i') }}</small>
+                        </div>
+                    </section>
+
                     @endforeach
                 </section>
-                <form action="{{ route('karbar.content.chat.send', $user->id) }}" method="post" id="form">
+                <form action="{{ route('admin.content.chat.send', [$user->id , $admin->id]) }}" method="post" id="form">
                     @csrf
                     {{method_field('post')}}
                     <section class="row">
@@ -96,6 +102,13 @@
 <script src="{{ asset('admin-assets/jalalidatepicker/persian-date.min.js') }}"></script>
 <script src="{{ asset('admin-assets/jalalidatepicker/persian-datepicker.min.js') }}"></script>
 
+<script>
+    const messages = document.getElementById("messages");
 
+    function scrollToBottom() {
+        messages.scrollTop = messages.scrollHeight;
+    }
+    window.onload = scrollToBottom;
+</script>
 
 @endsection

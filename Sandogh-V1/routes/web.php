@@ -24,9 +24,10 @@ use App\Http\Controllers\Admin\Content\AccountinformationController;
 use App\Http\Controllers\Admin\Content\VamController;
 use App\Http\Controllers\Admin\Content\PardakhtihaController;
 use App\Http\Controllers\Admin\Content\AghsatController;
+use App\Http\Controllers\Admin\Content\ChatController;
 use App\Http\Controllers\Admin\Content\UserAccountController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Karbar\Content\ChatController;
+use App\Http\Controllers\Karbar\Content\MessageController;
 use GuzzleHttp\Middleware;
 
 /*
@@ -113,6 +114,13 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
             Route::put('/update/{pardakhtihas}', [PardakhtihaController::class, 'update'])->name('admin.content.pardakhtiha.update');
             Route::delete('/destroy/{pardakhtihas}', [PardakhtihaController::class, 'destroy'])->name('admin.content.pardakhtiha.destroy');
             Route::get('/status/{pardakhtihas}', [PardakhtihaController::class, 'status'])->name('admin.content.category.status');
+        });
+        //chat
+        Route::prefix('chat')->group(function () {
+            Route::get('/', [ChatController::class, 'index'])->name('admin.content.chats.index');
+            Route::get('/admin/{user}', [ChatController::class, 'show'])->name('admin.content.chat.show');
+            Route::post('/admin/send/{user}/{admin}', [ChatController::class, 'send'])->name('admin.content.chat.send');
+            Route::delete('/admin/destroy/{user}', [ChatController::class, 'destroy'])->name('admin.content.chat.destroy');
         });
     });
 
@@ -258,8 +266,8 @@ Route::prefix('karbar')->namespace('Karbar')->group(function(){
     Route::prefix('content')->namespace('Content')->group(function () {
         Route::get('/change-password/{user}', [UserAccountController::class, 'index'])->name('karbar.content.change-password.index');
         Route::put('/change-password/update/{user}', [UserAccountController::class, 'update'])->name('karbar.content.change-password.update');
-        Route::get('/chat/{user}', [ChatController::class, 'index'])->name('karbar.content.chat.index');
-        Route::post('/chat/send/{user}', [ChatController::class, 'send'])->name('karbar.content.chat.send');
+        Route::get('/chat/{user}', [MessageController::class, 'index'])->name('karbar.content.message.index');
+        Route::post('/chat/send', [MessageController::class, 'send'])->name('karbar.content.message.send');
 
         //pardakhtghest
         Route::prefix('pardakhtghest')->group(function () {

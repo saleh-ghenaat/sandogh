@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2024 at 04:30 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Nov 03, 2024 at 10:04 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `account_informations` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `mojoodi` decimal(20,0) NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tedad_vam` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `tedad_vam` varchar(255) NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `user_access` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -47,11 +47,11 @@ CREATE TABLE `account_informations` (
 
 CREATE TABLE `comments` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `body` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `body` text NOT NULL,
   `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
   `author_id` bigint(20) UNSIGNED NOT NULL,
   `commentable_id` bigint(20) UNSIGNED NOT NULL,
-  `commentable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `commentable_type` varchar(255) NOT NULL,
   `seen` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0 => unseen, 1 => seen',
   `approved` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0 => not approved, 1 => approved',
   `status` tinyint(4) NOT NULL DEFAULT 0,
@@ -68,11 +68,11 @@ CREATE TABLE `comments` (
 
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -100,12 +100,48 @@ INSERT INTO `hesabkols` (`id`, `hesab_kol`, `created_at`, `updated_at`, `deleted
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `body` text NOT NULL,
+  `author_id` bigint(20) UNSIGNED NOT NULL,
+  `seen` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0 => unseen , 1 => seen',
+  `receiver_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `reference_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `body`, `author_id`, `seen`, `receiver_id`, `reference_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(13, 'سلام خسته نباشید', 2, 1, 1, NULL, '2024-11-03 15:04:26', '2024-11-03 17:26:52', NULL),
+(14, 'یه سوال داشتم', 2, 1, 1, NULL, '2024-11-03 15:04:40', '2024-11-03 17:26:52', NULL),
+(15, 'سلام تشکر', 1, 1, 2, NULL, '2024-11-03 15:05:48', '2024-11-03 17:25:06', NULL),
+(16, 'درخدمتم', 1, 1, 2, NULL, '2024-11-03 15:05:58', '2024-11-03 17:25:06', NULL),
+(17, 'چطور میتونم رمز عبور رو عوض کنم', 2, 1, 1, NULL, '2024-11-03 15:07:25', '2024-11-03 17:26:52', NULL),
+(18, 'در سایدبار به قسمت تغییر رمز عبور مراجعه کنید', 1, 1, 2, NULL, '2024-11-03 15:29:12', '2024-11-03 17:25:06', NULL),
+(19, 'متوجه شدید', 1, 1, 2, NULL, '2024-11-03 15:41:29', '2024-11-03 17:25:06', NULL),
+(20, 'بله تشکر', 2, 1, 1, NULL, '2024-11-03 16:28:17', '2024-11-03 17:26:52', NULL),
+(21, 'خواهش میکنم', 1, 0, NULL, NULL, '2024-11-03 17:08:09', '2024-11-03 17:08:09', NULL),
+(22, 'خواهش میکنم', 1, 1, 2, NULL, '2024-11-03 17:23:40', '2024-11-03 17:25:06', NULL),
+(23, 'خواهش میکنم', 1, 1, 2, NULL, '2024-11-03 17:24:10', '2024-11-03 17:25:06', NULL),
+(24, 'سپاس', 2, 1, 1, NULL, '2024-11-03 17:25:06', '2024-11-03 17:26:52', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -126,7 +162,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2022_08_29_142747_create_account_informations_table', 1),
 (11, '2022_08_29_143242_create_vams_table', 1),
 (12, '2022_08_31_180735_create_pardakhtihas_table', 1),
-(13, '2023_10_01_064736_create_hesabkols_table', 2);
+(13, '2023_10_01_064736_create_hesabkols_table', 2),
+(16, '2024_11_02_132903_add_ticket_id_to_chats', 4);
 
 -- --------------------------------------------------------
 
@@ -135,11 +172,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `notifications` (
-  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notifiable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` char(36) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `notifiable_type` varchar(255) NOT NULL,
   `notifiable_id` bigint(20) UNSIGNED NOT NULL,
-  `data` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `data` text NOT NULL,
   `read_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -157,7 +194,7 @@ CREATE TABLE `pardakhtihas` (
   `code_peygiri` decimal(20,0) NOT NULL,
   `mablagh_ghest` decimal(20,0) NOT NULL,
   `shahriye` decimal(20,0) NOT NULL,
-  `image` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` text NOT NULL,
   `ghabele_taiid` tinyint(4) NOT NULL DEFAULT 0 COMMENT '1 => taiid, 0 => taiid_nashode',
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `vam_id` bigint(20) UNSIGNED NOT NULL,
@@ -173,8 +210,8 @@ CREATE TABLE `pardakhtihas` (
 --
 
 CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -185,8 +222,8 @@ CREATE TABLE `password_resets` (
 --
 
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -198,11 +235,11 @@ CREATE TABLE `password_reset_tokens` (
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -216,11 +253,11 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `sessions` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(255) NOT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payload` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `payload` text NOT NULL,
   `last_activity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -232,7 +269,7 @@ CREATE TABLE `sessions` (
 
 CREATE TABLE `ticket_categories` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -247,13 +284,13 @@ CREATE TABLE `ticket_categories` (
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `national_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mobile` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'user',
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `national_code` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `mobile` varchar(255) NOT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -264,8 +301,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `status`, `first_name`, `last_name`, `national_code`, `password`, `mobile`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'admin', 'saleh', 'ghenaatpiishe', '2460366515', '$2y$10$5Jos6KqyWPNvPs.67DihbubyP9QXlQWbTaLHGUhAnIL0HgHwZ/qmu', '09172177835', 'n6lNKU4rRIXnB1d4Bj2jEnwDRZtywXchwuiagZvVXY2d68zGwlfkG6QSmmCu', '2023-02-28 16:23:00', '2023-02-28 16:23:00', NULL),
-(2, 'user', 'sana', 'saberi', '2460390513', '$2y$10$xGPqC/IB6azUecafmgeBEOpSwozFVGCxnDoUynn7MUbepBJ.iRlL.', '09337300261', NULL, '2023-02-28 16:25:44', '2023-02-28 16:25:44', NULL),
+(1, 'admin', 'saleh', 'ghenaatpiishe', '2460366515', '$2y$10$5Jos6KqyWPNvPs.67DihbubyP9QXlQWbTaLHGUhAnIL0HgHwZ/qmu', '09172177835', 'pZpAZWxrS7mf1H4RpGzZSqLuCHAeHeO22O35hiuI5vF0BezfgTMLnSqjT2Af', '2023-02-28 16:23:00', '2023-02-28 16:23:00', NULL),
+(2, 'user', 'sana', 'saberi', '2460390513', '$2y$10$Ge6rXCCstub86ynRNlS8mOAJCxYcJ.wqXBgQ0piAuaLN4U7s1nnBK', '09337300261', NULL, '2023-02-28 16:25:44', '2024-10-31 17:55:52', NULL),
 (3, 'user', 'علی اکبر', 'قناعت پیشه', '2460244177', '$2y$10$CiG.WKjCVVQbC9Tbaj6MhOCw4PC7cEP79iRLM1efyvsLwBToAkiXO', '09190042334', NULL, '2023-05-27 11:25:43', '2023-05-27 11:25:43', NULL),
 (5, 'user', 'مهرنوش', 'صحراییان', '2460146401', '$2y$10$J1qSEHwGsc1JfjE485QP5O36T5kzNRucdlDGx9D.RGbLX/DIF4Bz2', '09175817767', NULL, '2024-10-26 04:31:14', '2024-10-26 04:31:14', NULL),
 (6, 'user', 'محمد', 'علیخانی', '0380992019', '$2y$10$uoX/tqantrrLTZomi0iQOOPprHi5Vo0/O9P5mkWEDM8wBfGNFwzFy', '09191592041', NULL, '2024-10-26 04:32:37', '2024-10-26 04:32:37', NULL),
@@ -313,7 +350,9 @@ INSERT INTO `users` (`id`, `status`, `first_name`, `last_name`, `national_code`,
 (48, 'user', 'حسین', 'سلیمیان', '2298220824', '$2y$10$sKoxa/jEBtFOi2rB2n/4GuWgGAtPpiURUctm4nI9.xV8wz3Hdg7gq', '09132595288', NULL, '2024-10-26 05:00:35', '2024-10-26 05:00:35', NULL),
 (49, 'user', 'زهرا', 'سبوئی جهرمی', '2470930871', '$2y$10$tLk8J8Lrt.jLfGdEhBXN.O3YHXD17axL8Uk3ITW3TNOxxMCDP9Sf2', '09139694251', NULL, '2024-10-26 05:01:18', '2024-10-26 05:01:18', NULL),
 (50, 'user', 'ابوالفضل', 'مهرشاد', '2471715826', '$2y$10$OWn9jITnWSbq7rmYhhTfMuV4LNQOBafBJkXht1zwscYk9.ICKT54G', '09173924211', NULL, '2024-10-26 05:02:10', '2024-10-26 05:02:10', NULL),
-(51, 'user', 'نجمه', 'قناعت پیشه', '2471065937', '$2y$10$ZdTFix3iaSbhWpHR2FLS3.XuihWp1tr8fapebX40Zzl8tYMPWksBi', '09364483202', NULL, '2024-10-26 05:02:43', '2024-10-26 05:02:43', NULL);
+(51, 'user', 'نجمه', 'قناعت پیشه', '2471065937', '$2y$10$ZdTFix3iaSbhWpHR2FLS3.XuihWp1tr8fapebX40Zzl8tYMPWksBi', '09364483202', NULL, '2024-10-26 05:02:43', '2024-10-26 05:02:43', NULL),
+(54, 'user', 'Ali', 'Norouzi', '0110056371', '$2y$10$DqD0wYv2.0RBoJM4IViFLuUzinJXSoT0Pbc83EJrVMLqI0NeZDCJW', '09102429746', NULL, NULL, '2024-10-31 17:42:59', NULL),
+(55, 'user', 'سعید', 'فلاحی نصب', '0110056372', '$2y$10$h.nCaidufSPRIycU1TpgxOUyFNEz0PDv6oWLmmS6Sp4crFLATBppK', '09102429745', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -367,6 +406,13 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `hesabkols`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `messages_author_id_foreign` (`author_id`);
 
 --
 -- Indexes for table `migrations`
@@ -465,10 +511,16 @@ ALTER TABLE `hesabkols`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `pardakhtihas`
@@ -492,7 +544,7 @@ ALTER TABLE `ticket_categories`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `vams`
@@ -517,6 +569,12 @@ ALTER TABLE `account_informations`
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_author_id_foreign` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `comments_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `comments` (`id`);
+
+--
+-- Constraints for table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_author_id_foreign` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `pardakhtihas`
