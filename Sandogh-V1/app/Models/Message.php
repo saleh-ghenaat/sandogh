@@ -11,7 +11,7 @@ class Message extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['body' , 'author_id' , 'seen' , 'receiver_id' , 'reference_id'];
+    protected $fillable = ['body' , 'author_id' , 'seen' , 'receiver_id' , 'receiver_firstname' , 'receiver_lastname' , 'reference_id'];
 
     public function user(){
         return $this->belongsTo(User::class , 'author_id');

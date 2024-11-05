@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('head-tag')
-<title>گفتگوی آنلاین</title>
+<title>ایجاد چت جدید</title>
 <link rel="stylesheet" href="{{asset('admin-assets/jalalidatepicker/persian-datepicker.min.css')}}">
 <style>
     .textarea{
@@ -38,7 +38,8 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item font-size-12"> <a href="{{route('admin.home')}}">خانه</a></li>
-        <li class="breadcrumb-item font-size-12"> <a href="#">گفتگوی آنلاین</a></li>
+        <li class="breadcrumb-item font-size-12"> <a href="{{route('admin.content.chats.index')}}">چت ها</a></li>
+        <li class="breadcrumb-item font-size-12"> <a href="#">ایجاد چت جدید</a></li>
     </ol>
 </nav>
 
@@ -48,7 +49,7 @@
         <section class="main-body-container">
             <section class="main-body-container-header">
                 <h5>
-                     گفتگوی آنلاین
+                     ایجاد چت جدید
                 </h5>
             </section>
 
@@ -56,21 +57,29 @@
                 <a href="{{ route('admin.content.chats.index') }}" class="btn btn-info btn-sm">بازگشت</a>
             </section>
 
-            <section>
-                <section id="messages" style="background-color: lightgray;overflow:scroll;height:300px;" class="py-1 px-2 rounded ">
-                    @foreach($messages as $message)
-                    <section style="direction:{{$message->user()->latest()->first()->status == 'admin' ? 'rtl' : 'ltr'}}">
-                        <div class="p-2 rounded my-1 align-items-left" style="background-color: azure;width:fit-content;">
-                            <p class="pr-2">{{ $message->body }}</p>
-                            <small>{{ $message->created_at->format('H:i') }}</small>
-                        </div>
-                    </section>
 
-                    @endforeach
-                </section>
-                <form action="{{ route('admin.content.chat.send', $user) }}" method="post" id="form">
+                <form action="{{ route('admin.content.chat.store') }}" method="post" id="form">
                     @csrf
                     {{method_field('post')}}
+                    <section class="col-12">
+                        <div class="form-group">
+                            <label for="">انتخاب کاربر</label>
+                            <select name="user_id" id="" class="form-control form-control-sm">
+                                <option value="">کاربر را انتخاب کنید</option>
+                                @foreach ($users as $user)
+                                <option value="{{ $user->id }}" @if(old('user_id') == $user->id) selected @endif>{{ $user->first_name . ' ' . $user->last_name }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        @error('user_id')
+                        <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                            <strong>
+                                {{ $message }}
+                            </strong>
+                        </span>
+                    @enderror
+                    </section>
                     <section class="row">
                         <section class="col-12 my-2" style="height: 100px;">
                             <textarea name="body" class="textarea" placeholder="پیام خود را اینجا بنویسید..." required></textarea>
@@ -102,13 +111,6 @@
 <script src="{{ asset('admin-assets/jalalidatepicker/persian-date.min.js') }}"></script>
 <script src="{{ asset('admin-assets/jalalidatepicker/persian-datepicker.min.js') }}"></script>
 
-<script>
-    const messages = document.getElementById("messages");
 
-    function scrollToBottom() {
-        messages.scrollTop = messages.scrollHeight;
-    }
-    window.onload = scrollToBottom;
-</script>
 
 @endsection

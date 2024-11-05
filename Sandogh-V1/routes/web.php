@@ -119,7 +119,9 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
         Route::prefix('chat')->group(function () {
             Route::get('/', [ChatController::class, 'index'])->name('admin.content.chats.index');
             Route::get('/admin/{user}', [ChatController::class, 'show'])->name('admin.content.chat.show');
-            Route::post('/admin/send/{user}/{admin}', [ChatController::class, 'send'])->name('admin.content.chat.send');
+            Route::get('/create', [ChatController::class, 'create'])->name('admin.content.chat.create');
+            Route::post('/admin/store', [ChatController::class, 'store'])->name('admin.content.chat.store');
+            Route::post('/admin/send/{user}', [ChatController::class, 'send'])->name('admin.content.chat.send');
             Route::delete('/admin/destroy/{user}', [ChatController::class, 'destroy'])->name('admin.content.chat.destroy');
         });
     });

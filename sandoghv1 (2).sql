@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2024 at 10:04 PM
+-- Generation Time: Nov 05, 2024 at 05:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -105,10 +105,12 @@ INSERT INTO `hesabkols` (`id`, `hesab_kol`, `created_at`, `updated_at`, `deleted
 
 CREATE TABLE `messages` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `body` text NOT NULL,
+  `body` text DEFAULT NULL,
   `author_id` bigint(20) UNSIGNED NOT NULL,
   `seen` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0 => unseen , 1 => seen',
   `receiver_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `receiver_firstname` varchar(255) DEFAULT NULL,
+  `receiver_lastname` varchar(255) DEFAULT NULL,
   `reference_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -119,19 +121,10 @@ CREATE TABLE `messages` (
 -- Dumping data for table `messages`
 --
 
-INSERT INTO `messages` (`id`, `body`, `author_id`, `seen`, `receiver_id`, `reference_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(13, 'سلام خسته نباشید', 2, 1, 1, NULL, '2024-11-03 15:04:26', '2024-11-03 17:26:52', NULL),
-(14, 'یه سوال داشتم', 2, 1, 1, NULL, '2024-11-03 15:04:40', '2024-11-03 17:26:52', NULL),
-(15, 'سلام تشکر', 1, 1, 2, NULL, '2024-11-03 15:05:48', '2024-11-03 17:25:06', NULL),
-(16, 'درخدمتم', 1, 1, 2, NULL, '2024-11-03 15:05:58', '2024-11-03 17:25:06', NULL),
-(17, 'چطور میتونم رمز عبور رو عوض کنم', 2, 1, 1, NULL, '2024-11-03 15:07:25', '2024-11-03 17:26:52', NULL),
-(18, 'در سایدبار به قسمت تغییر رمز عبور مراجعه کنید', 1, 1, 2, NULL, '2024-11-03 15:29:12', '2024-11-03 17:25:06', NULL),
-(19, 'متوجه شدید', 1, 1, 2, NULL, '2024-11-03 15:41:29', '2024-11-03 17:25:06', NULL),
-(20, 'بله تشکر', 2, 1, 1, NULL, '2024-11-03 16:28:17', '2024-11-03 17:26:52', NULL),
-(21, 'خواهش میکنم', 1, 0, NULL, NULL, '2024-11-03 17:08:09', '2024-11-03 17:08:09', NULL),
-(22, 'خواهش میکنم', 1, 1, 2, NULL, '2024-11-03 17:23:40', '2024-11-03 17:25:06', NULL),
-(23, 'خواهش میکنم', 1, 1, 2, NULL, '2024-11-03 17:24:10', '2024-11-03 17:25:06', NULL),
-(24, 'سپاس', 2, 1, 1, NULL, '2024-11-03 17:25:06', '2024-11-03 17:26:52', NULL);
+INSERT INTO `messages` (`id`, `body`, `author_id`, `seen`, `receiver_id`, `receiver_firstname`, `receiver_lastname`, `reference_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(70, 'سلام کاربر گرامی', 1, 1, 2, 'sana', 'saberi', NULL, '2024-11-05 13:11:43', '2024-11-05 13:12:23', NULL),
+(71, 'سلام عزیز', 2, 0, 1, 'saleh', 'ghenaatpiishe', 70, '2024-11-05 13:12:07', '2024-11-05 13:12:07', NULL),
+(72, 'حال شما', 1, 1, 2, 'sana', 'saberi', 70, '2024-11-05 13:12:23', '2024-11-05 13:12:23', NULL);
 
 -- --------------------------------------------------------
 
@@ -163,7 +156,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (11, '2022_08_29_143242_create_vams_table', 1),
 (12, '2022_08_31_180735_create_pardakhtihas_table', 1),
 (13, '2023_10_01_064736_create_hesabkols_table', 2),
-(16, '2024_11_02_132903_add_ticket_id_to_chats', 4);
+(16, '2024_11_02_132903_add_ticket_id_to_chats', 4),
+(19, '2024_11_04_190457_add_receiver_firstname_to_messages_table', 5),
+(20, '2024_11_04_190701_add_receiver_lastname_to_messages_table', 6);
 
 -- --------------------------------------------------------
 
@@ -301,7 +296,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `status`, `first_name`, `last_name`, `national_code`, `password`, `mobile`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'admin', 'saleh', 'ghenaatpiishe', '2460366515', '$2y$10$5Jos6KqyWPNvPs.67DihbubyP9QXlQWbTaLHGUhAnIL0HgHwZ/qmu', '09172177835', 'pZpAZWxrS7mf1H4RpGzZSqLuCHAeHeO22O35hiuI5vF0BezfgTMLnSqjT2Af', '2023-02-28 16:23:00', '2023-02-28 16:23:00', NULL),
+(1, 'admin', 'saleh', 'ghenaatpiishe', '2460366515', '$2y$10$5Jos6KqyWPNvPs.67DihbubyP9QXlQWbTaLHGUhAnIL0HgHwZ/qmu', '09172177835', 'iLnXHLu9r7yV8HFxaXw3h6ahANKKy5JA3cuyq7cweoTU0VaCpSH4kI33RhOu', '2023-02-28 16:23:00', '2023-02-28 16:23:00', NULL),
 (2, 'user', 'sana', 'saberi', '2460390513', '$2y$10$Ge6rXCCstub86ynRNlS8mOAJCxYcJ.wqXBgQ0piAuaLN4U7s1nnBK', '09337300261', NULL, '2023-02-28 16:25:44', '2024-10-31 17:55:52', NULL),
 (3, 'user', 'علی اکبر', 'قناعت پیشه', '2460244177', '$2y$10$CiG.WKjCVVQbC9Tbaj6MhOCw4PC7cEP79iRLM1efyvsLwBToAkiXO', '09190042334', NULL, '2023-05-27 11:25:43', '2023-05-27 11:25:43', NULL),
 (5, 'user', 'مهرنوش', 'صحراییان', '2460146401', '$2y$10$J1qSEHwGsc1JfjE485QP5O36T5kzNRucdlDGx9D.RGbLX/DIF4Bz2', '09175817767', NULL, '2024-10-26 04:31:14', '2024-10-26 04:31:14', NULL),
@@ -514,13 +509,13 @@ ALTER TABLE `hesabkols`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `pardakhtihas`

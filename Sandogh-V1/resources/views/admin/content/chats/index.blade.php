@@ -13,7 +13,7 @@
     @endphp
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item font-size-12"> <a href="#">خانه</a></li>
+      <li class="breadcrumb-item font-size-12"> <a href="admin.home">خانه</a></li>
       <li class="breadcrumb-item font-size-12 active" aria-current="page"> چت ها </li>
     </ol>
   </nav>
@@ -31,7 +31,7 @@
             @include('admin.alerts.alert-section.success')
 
             <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                <a href="#" class="btn btn-info btn-sm">ایجاد چت جدید </a>
+                <a href="{{route('admin.content.chat.create')}}" class="btn btn-info btn-sm">ایجاد چت جدید </a>
                 <div class="max-width-16-rem">
                     <input type="text" class="form-control form-control-sm form-text" placeholder="جستجو">
                 </div>
@@ -44,22 +44,23 @@
                             <th>#</th>
                             <th>نام</th>
                             <th>نام خانوادگی</th>
-                            <th>پیام</th>
+                            <th>آخرین پیام</th>
                             <th class="max-width-16-rem text-center"><i class="fa fa-cogs"></i> تنظیمات</th>
                         </tr>
                     </thead>
                     <tbody>
 
+
                         @foreach ($users as $key => $user)
 
                         <tr>
                             <th>{{ $key += 1 }}</th>
-                            <td>{{ $user->first_name }}</td>
-                            <td>{{ $user->last_name }}</td>
-                            <td>{{ Str::limit($user->messages()->latest()->first()->body , 30) }}</td>
+                            <td>{{ $user->status == 'admin' ? $user->messages()->latest()->first()->receiver_firstname : $user->first_name }}</td>
+                            <td>{{ $user->status == 'admin' ? $user->messages()->latest()->first()->receiver_lastname : $user->last_name }}</td>
+                            <td>{{ Str::limit($user->messages()->latest()->first()->body , 30) ? Str::limit($user->messages()->latest()->first()->body , 30) : '-' }}</td>
 
 
-                            <td class="width-16-rem text-left">
+                            <td class="width-16-rem text-center">
                                 <a href="{{ route('admin.content.chat.show', $user->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> نمایش</a>
                                 <form class="d-inline" action="{{ route('admin.content.chat.destroy', $user->id) }}" method="post">
                                     @csrf

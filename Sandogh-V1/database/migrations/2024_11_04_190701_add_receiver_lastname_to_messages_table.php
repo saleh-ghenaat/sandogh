@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('chats', function (Blueprint $table) {
-            $table->foreignId('ticket_id')->nullable()->after('seen');
+        Schema::table('messages', function (Blueprint $table) {
+            $table->string('receiver_lastname')->after('receiver_firstname');
+
         });
     }
 
@@ -25,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('chats', function (Blueprint $table) {
+        Schema::table('messages', function (Blueprint $table) {
             //
         });
     }
