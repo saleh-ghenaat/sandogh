@@ -22,7 +22,8 @@ class MessageController extends Controller
 
     public function send(Request $request ,Message $message){
         $inputs = $request->validate([
-            'body' => 'required|min:1|max:1000|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي., ]+$/u'
+            'body' => 'required|min:1|max:1000|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?:،؟ ]+$/u'
+
         ]);
         $firstMessage = Message::where('receiver_id' , Auth::user()->id)->first();
         $receiver = User::find($firstMessage->author_id);

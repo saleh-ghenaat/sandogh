@@ -32,7 +32,7 @@ class ChatController extends Controller
 
     public function store(Request $request){
         $inputs = $request->validate([
-            'body' => 'required|min:1|max:1000|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي., ]+$/u'
+            'body' => 'required|min:1|max:1000|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?:،؟ ]+$/u'
         ]);
         $receiver = User::find($request->user_id);
         $inputs['author_id'] = Auth::user()->id;
@@ -76,7 +76,8 @@ class ChatController extends Controller
 
     public function send(Request $request , User $user){
         $inputs = $request->validate([
-            'body' => 'required|min:1|max:1000|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي., ]+$/u'
+            'body' => 'required|min:1|max:1000|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?:،؟ ]+$/u'
+
         ]);
 
 
