@@ -38,11 +38,11 @@
                 @php
                     use App\Models\Message;
 
-                    $lastMessage = Message::where('author_id', '!=', Auth::user()->id)->where('seen' , 0)
+                    $lastMessage = Message::where('seen',0)
                         ->latest()
                         ->first();
                 @endphp
-                <i class="{{ $lastMessage && $lastMessage->user->status == 'user' ? 'fas fa-circle' : ' ' }}"
+                <i class="{{ $lastMessage !== null && $lastMessage->user->status == 'user' ? 'fas fa-circle' : ' ' }}"
                     style="color: red;margin:0;padding:0;"></i>
                 <i class="fas fa-comment"></i>
                 <span> گفتگوی آنلاین </span>

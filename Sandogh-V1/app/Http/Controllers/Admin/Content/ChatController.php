@@ -20,6 +20,8 @@ class ChatController extends Controller
 
         $users = User::whereIn('id' , $authorsIds)->get();
 
+
+
         return view('admin.content.chats.index' , compact('users'));
     }
 
@@ -56,12 +58,15 @@ class ChatController extends Controller
         // if($user->messages() != null){
         //     $user->messages()->update(['receiver_id' => $admin->id , 'seen' => 1]);
         // }
-        if($user->status == 'admin'){
-            $user->messages()->update(['seen' => 1]);
-        }else{
-            $user->messages()->update(['receiver_id' => $admin->id , 'seen' => 1]);
+        // if($user->status == 'admin'){
+        //     $user->messages()->update(['seen' => 1]);
+        // }else{
+        //     $user->messages()->update(['receiver_id' => $admin->id , 'seen' => 1]);
 
-        }
+        // }
+
+
+
         $messages = Message::where('author_id' , $user->id)->orWhere('receiver_id' , $user->id)->orderBy('created_at', 'asc')
         ->get();
         return view('admin.content.chats.show' , compact('user' , 'admin' , 'messages'));
@@ -80,32 +85,52 @@ class ChatController extends Controller
 
         ]);
 
-
         if($user->status == 'admin'){
         $firstMessage = Message::where('author_id' , $user->id)->first();
 
-        $user->messages()->update(['seen' => 1]);
 
             $inputs['receiver_id'] = $firstMessage->receiver_id;
             $inputs['receiver_firstname'] = $firstMessage->receiver_firstname;
             $inputs['receiver_lastname'] = $firstMessage->receiver_lastname;
-        }else{
-        $firstMessage = Message::where('receiver_id' , $user->id)->first();
+            if($firstMessage->reference_id !== null){
+                $inputs['reference_id'] = $firstMessage->reference_id;
+            }else{
+                $inputs['reference_id'] = $firstMessage->id;
+            }
+            $allMessages = Message::where(['receiver_id'=> $user->id , 'seen' => 0])->get();
 
-        $user->messages()->update(['receiver_id' => Auth::user()->id, 'seen' => 1]);
+            foreach($allMessages as $message){
+
+                $message->seen = 1;
+                $result = $message->save();
+            }
+        }else{
+        $firstMessage = Message::where('author_id' , $user->id)->first();
+
             $inputs['receiver_id'] = $user->id;
             $inputs['receiver_firstname'] = $user->first_name;
             $inputs['receiver_lastname'] = $user->last_name;
+            if($firstMessage->reference_id !== null){
+                $inputs['reference_id'] = $firstMessage->reference_id;
+            }else{
+                $inputs['reference_id'] = $firstMessage->id;
+            }
+            $allMessages = Message::where('author_id' , $user->id)->where('seen' , 0)->get();
+
+            foreach($allMessages as $message){
+                $message->seen = 1;
+                $message->save();
+            }
+
         }
         $inputs['author_id'] = Auth::user()->id;
         $inputs['body'] = $request->body;
+        $inputs['seen'] = 0;
 
-        if($firstMessage->reference_id !== null){
-            $inputs['reference_id'] = $firstMessage->reference_id;
-        }else{
-            $inputs['reference_id'] = $firstMessage->id;
-        }
+
+
         Message::create($inputs);
+
 
         return redirect()->back();
 

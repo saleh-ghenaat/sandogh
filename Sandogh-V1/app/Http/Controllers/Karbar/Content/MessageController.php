@@ -26,17 +26,26 @@ class MessageController extends Controller
 
         ]);
         $firstMessage = Message::where('receiver_id' , Auth::user()->id)->first();
-        $receiver = User::find($firstMessage->author_id);
+        if($firstMessage){
+            $receiver = User::find($firstMessage->author_id);
+            $inputs['receiver_id'] = $firstMessage->author_id;
+            $inputs['receiver_firstname'] = $receiver->first_name;
+            $inputs['receiver_lastname'] = $receiver->last_name;
+            if($firstMessage->reference_id !== null){
+                $inputs['reference_id'] = $firstMessage->reference_id;
+            }else{
+                $inputs['reference_id'] = $firstMessage->id;
+
+            }
+        }else{
+            $inputs['receiver_id'] = null;
+            $inputs['receiver_firstname'] = null;
+            $inputs['receiver_lastname'] = null;
+        }
         $inputs['author_id'] = Auth::user()->id;
         $inputs['body'] = $request->body;
-        $inputs['receiver_id'] = $firstMessage->author_id;
-        $inputs['receiver_firstname'] = $receiver->first_name;
-        $inputs['receiver_lastname'] = $receiver->last_name;
-        if($firstMessage->reference_id !== null){
-            $inputs['reference_id'] == $firstMessage->reference_id;
-        }else{
-            $inputs['reference_id'] = $firstMessage->id;
-        }
+
+
 
         $message = Message::create($inputs);
         // Message::create([

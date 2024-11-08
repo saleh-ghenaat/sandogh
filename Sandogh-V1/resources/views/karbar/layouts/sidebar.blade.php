@@ -23,7 +23,7 @@
                             ->first();
 
                     @endphp
-                    <i class="{{ $lastMessage->seen == 0 ? 'fas fa-circle' : ' ' }}"
+                    <i class="{{ $lastMessage !== null && $lastMessage->seen == 0 ? 'fas fa-circle' : ' ' }}"
                         style="color: red;margin:0;padding:0;"></i>
                     <i class="fas fa-comment"></i>
                     <span> گفتگوی آنلاین </span>
