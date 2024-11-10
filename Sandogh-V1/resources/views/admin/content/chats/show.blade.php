@@ -57,7 +57,10 @@
             </section>
 
             <section>
+                <section class="bg-gray mx-0 text-center rounded p-1">چت با : {{$user->first_name . ' ' . $user->last_name}}</section>
                 <section id="messages" style="background-color: lightgray;overflow:scroll;height:300px;" class="py-1 px-2 rounded ">
+
+
                     @foreach($messages as $message)
                     <section style="direction:{{$message->user()->latest()->first()->status == 'admin' ? 'rtl' : 'ltr'}}">
                         <div class="p-2 rounded my-1 align-items-left" style="background-color: azure;width:fit-content;">

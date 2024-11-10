@@ -49,4 +49,29 @@ class User extends Authenticatable
     public function messages(){
         return $this->hasMany(Message::class , 'author_id');
     }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'author_id');
+    }
+
+    // رابطه با پیام‌های دریافت شده توسط کاربر (دریافت‌کننده پیام)
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
+    // دریافت تمام چت‌ها (پیام‌هایی که کاربر با ادمین یا دیگر کاربران رد و بدل کرده)
+    public function chats()
+    {
+        return $this->sentMessages()->union($this->receivedMessages())
+            ->orderBy('created_at', 'asc');
+    }
+
+    // برای بررسی اینکه آیا کاربر ادمین است یا خیر
+    public function isAdmin()
+    {
+        return $this->status === 'admin';
+    }
+
 }

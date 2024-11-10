@@ -50,40 +50,61 @@
                         <tbody>
 
 
-                            @foreach ($users as $key => $user)
+                            @foreach ($messages as $key => $message)
                                 @php
 
-                                    if ($user->status != 'admin') {
-                                        $count = $user->first()->messages()->get()->pluck('seen');
-                                        $count = $count
-                                            ->filter(function ($value) {
-                                                return $value === 0;
-                                            })
-                                            ->count();
-                                    } else {
+                                    // if ($user->status != 'admin') {
+                                    //     $count = $user->first()->messages()->get()->pluck('seen');
+                                    //     $count = $count
+                                    //         ->filter(function ($value) {
+                                    //             return $value === 0;
+                                    //         })
+                                    //         ->count();
+                                    // } else {
+                                    //     $user = $user->where('id', $user->messages->first()->receiver_id)->get();
+                                    //     $count = $user->first()->messages()->get()->pluck('seen');
+                                    //     $count = $count
+                                    //         ->filter(function ($value) {
+                                    //             return $value === 0;
+                                    //         })
+                                    //         ->count();
+                                    //     $user = $user->first();
 
-                                        $user = $user->where('id', $user->messages->first()->receiver_id)->get();
-                                        $count = $user->first()->messages()->get()->pluck('seen');
+                                    // }
+                                    if($message->user()->first()->status =='admin'){
+
+                                        $count = \App\Models\User::where('id' , $message->receiver_id)->first()->sentMessages()->pluck('seen');
                                         $count = $count
-                                            ->filter(function ($value) {
-                                                return $value === 0;
-                                            })
+                                             ->filter(function ($value) {
+                                                 return $value === 0;
+                                             })
                                             ->count();
-                                        $user = $user->first();
+                                            $user = \App\Models\User::where('id' , $message->receiver_id)->first();
+
+                                    }else{
+                                        $count = $message->user()->first()->sentMessages()->pluck('seen');
+                                         $count = $count
+                                             ->filter(function ($value) {
+                                                 return $value === 0;
+                                             })
+                                            ->count();
+                                            $user = \App\Models\User::where('id' , $message->author_id)->first();
 
                                     }
+
+
                                 @endphp
                                 <tr>
                                     <th>{{ $key += 1 }}</th>
-                                    <td>{{ $user->status == 'admin' ? $user->first_name : $user->first_name }}
+                                    <td>{{ $message->user()->first()->status == 'admin' ? $message->receiver_firstname : $message->user()->first()->first_name }}
                                     </td>
-                                    <td>{{ $user->status == 'admin' ? $user->last_name : $user->last_name }}
+                                    <td>{{ $message->user()->first()->status == 'admin' ? $message->receiver_lastname : $message->user()->first()->last_name }}
                                     </td>
                                     <td>{{ $count ? $count : '-' }}</td>
 
 
                                     <td class="width-16-rem text-center">
-                                        <a href="{{ route('admin.content.chat.show', $user->id) }}"
+                                        <a href="{{ route('admin.content.chat.show', $user) }}"
                                             class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> نمایش</a>
                                         <form class="d-inline" action="{{ route('admin.content.chat.destroy', $user->id) }}"
                                             method="post">

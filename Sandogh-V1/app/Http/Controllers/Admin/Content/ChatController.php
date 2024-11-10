@@ -14,20 +14,18 @@ class ChatController extends Controller
     public function index(){
 
 
+        // $authorsIds = Message::whereNull('reference_id')->pluck('author_id')->unique();
+        // dd($authorsIds);
 
-        $authorsIds = Message::whereNull('reference_id')->pluck('author_id')->unique();
+        // $users = User::whereIn('id' , $authorsIds)->where('status' , 'user')->get();
 
+        $messages = Message::whereNull('reference_id')->get();
 
-        $users = User::whereIn('id' , $authorsIds)->get();
-
-
-
-        return view('admin.content.chats.index' , compact('users'));
+        return view('admin.content.chats.index' , compact('messages'));
     }
 
     public function create(){
         $users = User::where('status' , 'user')->get();
-        // dd($users);
         return view('admin.content.chats.create' , compact('users'));
 
     }
@@ -142,7 +140,7 @@ class ChatController extends Controller
         foreach($receivedMessagesIds as $receivedMessagesId){
             array_push($messagesIds , $receivedMessagesId);
         }
-        $sendMessagesIds = $user->messages()->pluck('id');
+        $sendMessagesIds = $user->sentMessages()->pluck('id');
         foreach($sendMessagesIds as $sendMessagesId){
             array_push($messagesIds , $sendMessagesId);
         }

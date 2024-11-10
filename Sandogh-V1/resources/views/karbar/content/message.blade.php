@@ -59,6 +59,8 @@
                 </section>
 
                 <section>
+                <section class="bg-gray mx-0 text-center rounded p-1">چت با : اپراتور</section>
+
                     <section id="messages" style="background-color: lightgray;overflow:scroll;height:300px;"
                         class="py-1 px-2 rounded ">
                         @foreach ($messages as $message)

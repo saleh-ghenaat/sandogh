@@ -25,12 +25,21 @@ class MessageController extends Controller
             'body' => 'required|min:1|max:1000|regex:/^[ا-یa-zA-Z0-9\-۰-۹ء-ي.,><\/;\n\r&?:،؟ ]+$/u'
 
         ]);
-        $firstMessage = Message::where('receiver_id' , Auth::user()->id)->first();
+        $admin = User::where('status' , 'admin')->first();
+        $firstMessage = Message::where('receiver_id' , Auth::user()->id)->orWhere('author_id' , Auth::user()->id)->first();
         if($firstMessage){
-            $receiver = User::find($firstMessage->author_id);
-            $inputs['receiver_id'] = $firstMessage->author_id;
-            $inputs['receiver_firstname'] = $receiver->first_name;
-            $inputs['receiver_lastname'] = $receiver->last_name;
+            // $receiver = User::find($firstMessage->author_id);
+            if($firstMessage->author_id == Auth::user()->id){
+                $inputs['receiver_id'] = $firstMessage->receiver_id;
+            $inputs['receiver_firstname'] = $firstMessage->receiver_firstname;
+            $inputs['receiver_lastname'] = $firstMessage->receiver_lastname;
+            }elseif($firstMessage->receiver_id == Auth::user()->id){
+                $author = User::where('id' , $firstMessage->author_id)->first();
+                $inputs['receiver_id'] = $author->id;
+                $inputs['receiver_firstname'] = $author->first_name;
+                $inputs['receiver_lastname'] = $author->last_name;
+            }
+
             if($firstMessage->reference_id !== null){
                 $inputs['reference_id'] = $firstMessage->reference_id;
             }else{
@@ -38,9 +47,9 @@ class MessageController extends Controller
 
             }
         }else{
-            $inputs['receiver_id'] = null;
-            $inputs['receiver_firstname'] = null;
-            $inputs['receiver_lastname'] = null;
+            $inputs['receiver_id'] = $admin->id;
+            $inputs['receiver_firstname'] = $admin->first_name;
+            $inputs['receiver_lastname'] = $admin->last_name;
         }
         $inputs['author_id'] = Auth::user()->id;
         $inputs['body'] = $request->body;
