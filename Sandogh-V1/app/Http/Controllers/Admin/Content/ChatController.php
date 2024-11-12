@@ -20,12 +20,11 @@ class ChatController extends Controller
         // $users = User::whereIn('id' , $authorsIds)->where('status' , 'user')->get();
 
         $messages = Message::whereNull('reference_id')->get();
-
         return view('admin.content.chats.index' , compact('messages'));
     }
 
     public function create(){
-        $users = User::where('status' , 'user')->get();
+        $users = User::where('status' , 'user')->doesntHave('sentMessages')->doesntHave('receivedMessages')->get();
         return view('admin.content.chats.create' , compact('users'));
 
     }
@@ -86,7 +85,6 @@ class ChatController extends Controller
         if($user->status == 'admin'){
         $firstMessage = Message::where('author_id' , $user->id)->first();
 
-
             $inputs['receiver_id'] = $firstMessage->receiver_id;
             $inputs['receiver_firstname'] = $firstMessage->receiver_firstname;
             $inputs['receiver_lastname'] = $firstMessage->receiver_lastname;
@@ -103,8 +101,7 @@ class ChatController extends Controller
                 $result = $message->save();
             }
         }else{
-        $firstMessage = Message::where('author_id' , $user->id)->first();
-
+        $firstMessage = Message::where('receiver_id' , $user->id)->orWhere('author_id' , $user->id)->first();
             $inputs['receiver_id'] = $user->id;
             $inputs['receiver_firstname'] = $user->first_name;
             $inputs['receiver_lastname'] = $user->last_name;
